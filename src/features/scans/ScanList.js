@@ -5,6 +5,12 @@ import './ScanList.css'
 class ScanList extends React.Component {
 
     render() {
+        const { scans, users } = this.props;
+
+        if (!scans || !users) {
+            return null;
+        }
+
         return (
             <div>
                 <div className="Header">
@@ -20,7 +26,7 @@ class ScanList extends React.Component {
                             >
                                 {scan.name}
                                 <div className="UserName">
-                                    by {user.name}
+                                    by <i>{user.name}</i>
                                 </div>
                             </div>
                         );

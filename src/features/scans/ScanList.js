@@ -1,38 +1,57 @@
 import React from 'react';
+import StyledPaper from '../../components/StyledPaper';
+import StyledTableHeader from '../../components/StyledTableHeader';
+import Table from '@material-ui/core/Table';
+import TableCell from '@material-ui/core/TableCell';
+import TableBody from '@material-ui/core/TableBody';
+import TableRow from '@material-ui/core/TableRow';
 import './ScanList.css'
 
-
 class ScanList extends React.Component {
-
     render() {
-        const { scans, users } = this.props;
+        const { scans, onSortColumn, orderBy, orderedAscending } = this.props;
 
-        if (!scans || !users) {
+        const rows = [
+            { id: 'name', numeric: false, label: 'Name' },
+            { id: 'username', numeric: false, label: 'Username' },
+            { id: 'elevationMin', numeric: true, label: 'Min Elevation' },
+            { id: 'elevationMax', numeric: true, label: 'Max Elevation' },
+            { id: 'actions', numeric: false, disablePadding: false, label: '' }
+        ];
+
+        if (!scans) {
             return null;
         }
 
         return (
-            <div>
-                <div className="Header">
-                    Scans:
-                </div>
-                <div className="ScanList">
-                    {this.props.scans.map((scan, i) => {
-                        const user = this.props.users.find(u => u.id === scan.scannedByUserId);
+            <StyledPaper>
+                <Table aria-labelledby="tableTitle">
+                    <StyledTableHeader
+                        rows={rows}
+                        onSortColumn={onSortColumn}
+                        orderBy={orderBy}
+                        orderedAscending={orderedAscending}
+                    />
+                    <TableBody>
+                    {scans
+                        .map(n => {
                         return (
-                            <div
-                                className="ScanListItem"
-                                key={i}
+                            <TableRow
+                                hover
+                                tabIndex={-1}
+                                key={n.name}
                             >
-                                {scan.name}
-                                <div className="UserName">
-                                    by <i>{user.name}</i>
-                                </div>
-                            </div>
+                                <TableCell>{n.name}</TableCell>
+                                <TableCell>{n.username}</TableCell>
+                                <TableCell align="right">{n.elevationMin}</TableCell>
+                                <TableCell align="right">{n.elevationMax}</TableCell>
+                                <TableCell align="right">{n.protein}</TableCell>
+                            </TableRow>
                         );
                     })}
-                </div>
-            </div>
+                    </TableBody>
+                </Table>
+            </StyledPaper>
         );
     }
 }

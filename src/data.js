@@ -44,7 +44,7 @@ export const createScanData = () => [
     {
         name: 'Column #2',
         elevationMax: 0.2,
-        elevationMin: 9.0,
+        elevationMin: 11.0,
         scannedByUserId: 0,
     },
     {

@@ -23,11 +23,11 @@ export function sortData(columnId) {
     }
 }
 
-export function addScan(scan) {
+export function addScan(newItemId) {
     return (dispatch) => {
         dispatch({
             type: ADD_SCAN_DONE,
-            payload: scan
+            payload: newItemId
         });
     }
 }

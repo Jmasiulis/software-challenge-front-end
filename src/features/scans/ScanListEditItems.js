@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
 
 class ScanListEditItems extends React.Component {
     constructor(props) {
@@ -26,14 +27,13 @@ class ScanListEditItems extends React.Component {
     }
 
     render() {
-        const { users, onEditConfirm, onEditCancel, name, username, elevationMin, elevationMax, id } = this.props;
+        const { users, onEditConfirm, onEditCancel, name, id } = this.props;
 
         return (
             <Fragment>
                 <TableCell>
                     <TextField
-                        required
-                        id="standard-required"
+                        id="standard"
                         defaultValue={name}
                         onChange={(e) => this.handleChange(e, 'name')}
                         margin="normal"
@@ -41,8 +41,12 @@ class ScanListEditItems extends React.Component {
                 </TableCell>
                 <TableCell>
                     <Select
-                        value={this.state.username}
+                        value={this.state.username || ''}
                         onChange={(e) => this.handleChange(e, 'username')}
+                        inputProps={{
+                            name: 'username',
+                            id: 'username',
+                        }}
                     >
                         {users.map((item) => {
                             return (<MenuItem key={item.name} value={item.name}>{item.name}</MenuItem>)
@@ -52,7 +56,7 @@ class ScanListEditItems extends React.Component {
                 <TableCell align="right">
                     <TextField
                         id="standard-number"
-                        value={this.state.elevationMin}
+                        value={this.state.elevationMin || 0}
                         onChange={(e) => this.handleChange(e, 'elevationMin')}
                         type="number"
                         margin="normal"
@@ -61,7 +65,7 @@ class ScanListEditItems extends React.Component {
                 <TableCell align="right">
                     <TextField
                         id="standard-number"
-                        value={this.state.elevationMax}
+                        value={this.state.elevationMax || 0}
                         onChange={(e) => this.handleChange(e, 'elevationMax')}
                         type="number"
                         margin="normal"
@@ -71,7 +75,14 @@ class ScanListEditItems extends React.Component {
                     <Button className="edit-scan-button" variant="outlined" size="medium" color="secondary" onClick={() => onEditCancel(id)}>
                         Cancel
                     </Button>
-                    <Button className="edit-scan-button" variant="outlined" size="medium" color="primary" onClick={() => onEditConfirm(this.state)}>
+                    <Button
+                        disabled={!this.state.name || !this.state.username || !this.state.elevationMin || !this.state.elevationMax}
+                        className="edit-scan-button"
+                        variant="outlined"
+                        size="medium"
+                        color="primary"
+                        onClick={() => onEditConfirm(this.state)}
+                    >
                         Confirm
                     </Button>
                 </TableCell>

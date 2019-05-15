@@ -38,7 +38,7 @@ export default function (state = initialState, { type, payload }) {
 
 		case ADD_SCAN_DONE:
 			return update(state, {
-				scans: { $push: [{id: uuidv4()}] },
+				scans: { $push: [{id: payload}] },
 				orderedColumnId: { $set: null }
 			});
 

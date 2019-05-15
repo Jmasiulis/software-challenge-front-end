@@ -19,8 +19,8 @@ class ScanContainer extends React.Component {
         this.props.dispatch(sortData(columnId));
     }
 
-    handleScanAdd(scan){
-        this.props.dispatch(addScan(scan));
+    handleScanAdd(newItemId){
+        this.props.dispatch(addScan(newItemId));
     }
 
     handleScanEdit(scan) {

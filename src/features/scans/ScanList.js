@@ -1,6 +1,6 @@
 import React from 'react';
+import uuidv4 from 'uuid/v4';
 import Table from '@material-ui/core/Table';
-import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
@@ -18,6 +18,7 @@ class ScanList extends React.Component {
         this.editScan = this.editScan.bind(this);
         this.handleEditConfirm = this.handleEditConfirm.bind(this);
         this.cancelEdit = this.cancelEdit.bind(this);
+        this.addScan = this.addScan.bind(this);
     }
 
     editScan(itemId) {
@@ -46,8 +47,14 @@ class ScanList extends React.Component {
         });
     }
 
+    addScan() {
+        const newItemId = uuidv4();
+        this.props.onAddScan(newItemId);
+        this.editScan(newItemId);
+    }
+
     render() {
-        const { scans, users, onSortColumn, onAddScan, onEditScan, orderBy, orderedAscending } = this.props;
+        const { scans, users, onSortColumn, onAddScan, orderBy, orderedAscending } = this.props;
         const { itemIdsInEdit } = this.state;
 
         const rows = [
@@ -89,7 +96,7 @@ class ScanList extends React.Component {
                     </TableBody>
                 </Table>
                 <div className="add-scan">
-                    <Button variant="contained" size="medium" color="primary" onClick={onAddScan}>
+                    <Button variant="contained" size="medium" color="primary" onClick={() => this.addScan()}>
                         Add new scan
                     </Button>
                 </div>

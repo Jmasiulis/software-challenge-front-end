@@ -1,11 +1,15 @@
 import update from 'immutability-helper';
+import uuidv4 from 'uuid/v4';
 import {
 	CREATING_SCANS_DONE,
-	SORT_DATA_DONE
+	SORT_DATA_DONE,
+	ADD_SCAN_DONE,
+	EDIT_SCAN_DONE
 } from './actions';
 
 const initialState = {
 	scans: null,
+	users: null,
 	orderedColumnId: null,
 	orderedAscending: true
 };
@@ -14,8 +18,9 @@ export default function (state = initialState, { type, payload }) {
 	switch (type) {
       	case CREATING_SCANS_DONE:
 			return update(state, {
-				scans: { $set: formInitialData(payload) }
-		});
+				scans: { $set: formInitialData(payload) },
+				users: { $set: payload.users }
+			});
 		
 		case SORT_DATA_DONE:
 			if (state.orderedColumnId === payload) {
@@ -29,6 +34,21 @@ export default function (state = initialState, { type, payload }) {
 				orderedColumnId: { $set: payload },
 				scans: { $set: sortData(state.scans, payload, true) },
 				orderedAscending: { $set: true }
+			});
+
+		case ADD_SCAN_DONE:
+			return update(state, {
+				scans: { $push: [{id: uuidv4()}] },
+				orderedColumnId: { $set: null }
+			});
+
+		case EDIT_SCAN_DONE:
+			return update(state, {
+				scans: { $apply: b => b.map((item, ii) => {
+					if(item.id !== payload.id) return item;
+					return payload;
+				}) },
+				orderedColumnId: { $set: null }
 			});
 
     	default:
@@ -49,6 +69,7 @@ function formInitialData({scans, users}) {
 	
 	return scans.map(item => {
 		item.username = groupedUsers[item.scannedByUserId] && groupedUsers[item.scannedByUserId].name;
+		item.id = uuidv4();
 
 		return item;
 	})

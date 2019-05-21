@@ -1,13 +1,18 @@
 import React from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import PropTypes from 'prop-types';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Paper from '@material-ui/core/Paper';
 
-export default function StyledPaper(props) {
+export default function StyledPaper({ children }) {
   return (
     <MuiThemeProvider>
       <Paper>
-        {props.children}
+        {children}
       </Paper>
     </MuiThemeProvider>
   );
 }
+
+StyledPaper.propTypes = {
+  children: PropTypes.node.isRequired
+};
